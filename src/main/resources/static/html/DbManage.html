@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>DbManage</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+  <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!--  <link href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css" rel="stylesheet">-->
+<!--  <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>-->
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+  <script src="https://cdn.bootcss.com/datatables/1.10.16/js/jquery.dataTables.js"></script>
+  <style>
+    .Tan{
+      color:#11264f;
+    }
+    .Bgc{
+      background-color:#afdfe4;
+    }
+    .TextBt1{
+       color:#11264f;
+    }
+    .TextBt{
+       word-break:keep-all;
+       color:white;
+    }
+    tr{
+       background-color:#1b315e;
+    }
+
+    .content {
+      margin: 50px auto;
+      border: 1px solid #ccc;
+    }
+
+    .operation {
+      margin: 10px;
+    }
+
+    .operation>button {
+      margin: 10px;
+    }
+
+    #books_length {
+      float: left;
+      margin-left: 20px;
+    }
+
+    #books_filter {
+      float: right;
+      margin-right: 20px;
+    }
+
+    #books {
+      margin: 5px;
+    }
+
+    .center-block {
+      display: block;
+      width: 21%;
+      margin: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <section class="content p-3 mb-2 ">
+    <div class="btn-group operation">
+      <button id="btn_add" type="button" class="btn btn-primary">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+      </button>
+      <button id="btn_edit" type="button" class="btn btn-info">
+        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改
+      </button>
+      <button id="btn_delete" type="button" class="btn btn-danger">
+        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
+      </button>
+    </div>
+
+    <div class="modal fade Tan" id="addBook" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">添加题目</h4>
+          </div>
+          <div id="addBookModal" class="modal-body">
+            <div class="form-horizontal">
+<!--              <div class="form-group">-->
+<!--                <label for="id" class="col-sm-2 control-label">题号:*</label>-->
+<!--                <div class="col-sm-10">-->
+<!--                  <input class="form-control" id="id" type="text">-->
+<!--                </div>-->
+<!--              </div>-->
+<!--              <div class="form-group">-->
+<!--                <label for="type" class="col-sm-2 control-label">科目:*</label>-->
+<!--                <div class="col-sm-10">-->
+<!--                  <input class="form-control" id="type" type="text">-->
+<!--                </div>-->
+<!--              </div>-->
+<!--              <div class="form-group">-->
+<!--                <label for="subtype" class="col-sm-2 control-label">题组:*</label>-->
+<!--                <div class="col-sm-10">-->
+<!--                  <input class="form-control" id="subtype" type="text">-->
+<!--                </div>-->
+<!--              </div>-->
+              <div class="form-group">
+                <label for="question" class="col-sm-2 control-label">问题:*</label>
+                <div class="col-sm-10">
+                  <input class="form-control" id="question" type="text">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="answer_a" class="col-sm-2 control-label">选项A:*</label>
+                <div class="col-sm-10">
+                  <input class="form-control" id="answer_a" type="text">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="answer_b" class="col-sm-2 control-label">选项B:*</label>
+                <div class="col-sm-10">
+                  <input class="form-control" id="answer_b" type="text">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="answer_c" class="col-sm-2 control-label">选项C:*</label>
+                <div class="col-sm-10">
+                  <input class="form-control" id="answer_c" type="text">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="answer_d" class="col-sm-2 control-label">选项D:*</label>
+                <div class="col-sm-10">
+                  <input class="form-control" id="answer_d" type="text">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="answer_true" class="col-sm-2 control-label">答案:*</label>
+                <div class="col-sm-10">
+                  <input class="form-control" id="answer_true" type="text">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="center-block">
+              <button id="cancelAdd" type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+              <button id="addBooksInfo" type="button" class="btn btn-success" data-dismiss="modal">保存</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade Tan" id="editBookInfo" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">修改图书内容</h4>
+            </div>
+            <div id="editBookModal" class="modal-body">
+              <div class="form-horizontal">
+<!--                <div class="form-group">-->
+<!--                  <label for="editId" class="col-sm-2 control-label">题号:*</label>-->
+<!--                  <div class="col-sm-10">-->
+<!--                    <input class="form-control" id="editId" type="text">-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                <div class="form-group">-->
+<!--                  <label for="editType" class="col-sm-2 control-label">科目:*</label>-->
+<!--                  <div class="col-sm-10">-->
+<!--                    <input class="form-control" id="editType" type="text">-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                <div class="form-group">-->
+<!--                  <label for="editSubtype" class="col-sm-2 control-label">题组:*</label>-->
+<!--                  <div class="col-sm-10">-->
+<!--                    <input class="form-control" id="editSubtype" type="text">-->
+<!--                  </div>-->
+<!--                </div>-->
+                <div class="form-group">
+                  <label for="editQuestion" class="col-sm-2 control-label">问题:*</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" id="editQuestion" type="text">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="editAnswer_a" class="col-sm-2 control-label">选项A:*</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" id="editAnswer_a" type="text">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="editAnswer_b" class="col-sm-2 control-label">选项B:*</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" id="editAnswer_b" type="text">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="editAnswer_c" class="col-sm-2 control-label">选项C:*</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" id="editAnswer_c" type="text">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="editAnswer_d" class="col-sm-2 control-label">选项D:*</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" id="editAnswer_d" type="text">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="editAnswer_true" class="col-sm-2 control-label">答案:*</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" id="editAnswer_true" type="text">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <div class="center-block">
+                <button id="cancelEdit" type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button id="saveEdit" type="button" class="btn btn-success" data-dismiss="modal">保存</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteBook" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">确认要删除吗？</h4>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            <button id="delete" type="button" class="btn btn-danger" data-dismiss="modal">删除</button>
+          </div>
+        </div>
+      </div>
+    </div>
+      
+    <table id="books" class="table table-striped table-bordered row-border hover order-column"cellspacing="0" width="100%">
+      <thead>
+        <tr class="TextBt">
+          <th>序号</th>
+          <th >题号</th>
+<!--          <th>科目</th>-->
+<!--          <th>题组</th>-->
+          <th>问题</th>
+          <th>选项A</th>
+          <th>选项B</th>
+          <th>选项C</th>
+          <th>选项D</th>
+          <th>答案</th>
+        </tr>
+      </thead>
+      <tbody class="TextBt1"></tbody>
+    </table>
+  </section>
+</body>
+<script>
+    var type = window.sessionStorage.getItem("type")
+    $.ajax({
+        type:"post",
+        url:"http://localhost:8081/getQuestionInfo",
+        data:{
+            type:type,
+        },
+        success:function(res) {
+            console.log(res);
+            var data = res['DataStruct']['DataStruct3'][0];
+            var table = $('#books').DataTable({
+                data: res,
+                "pagingType": "full_numbers",
+                "bSort": true,
+                "language": {
+                    "sProcessing": "处理中...",
+                    "sLengthMenu": "显示 _MENU_ 项结果",
+                    "sZeroRecords": "没有匹配结果",
+                    "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                    "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                    "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                    "sInfoPostFix": "",
+                    "sSearch": "搜索:",
+                    "sUrl": "",
+                    "sEmptyTable": "表中数据为空",
+                    "sLoadingRecords": "载入中...",
+                    "sInfoThousands": ",",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "上页",
+                        "sNext": "下页",
+                        "sLast": "末页"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": 以升序排列此列",
+                        "sSortDescending": ": 以降序排列此列"
+                    }
+                },
+                "columnDefs": [{
+                    "searchable": false,
+                    "orderable": true,
+                    "targets": 0
+                }],
+                "order": [[0,'asc'],[1, 'asc'],[2, 'asc'],[3, 'asc'],[4, 'asc'],[5, 'asc'],[6, 'asc'],[7, 'asc']]
+            });
+        }
+    })
+
+  var titles = ['题号','问题','选项A', '选项B','选项C','选项D','答案']
+  $(function () {
+    var table = $('#books').DataTable({
+      data: data,
+      "pagingType": "full_numbers",
+      "bSort": true,
+      "language": {
+        "sProcessing": "处理中...",
+        "sLengthMenu": "显示 _MENU_ 项结果",
+        "sZeroRecords": "没有匹配结果",
+        "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+        "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+        "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+        "sInfoPostFix": "",
+        "sSearch": "搜索:",
+        "sUrl": "",
+        "sEmptyTable": "表中数据为空",
+        "sLoadingRecords": "载入中...",
+        "sInfoThousands": ",",
+        "oPaginate": {
+            "sFirst": "首页",
+            "sPrevious": "上页",
+            "sNext": "下页",
+            "sLast": "末页"
+        },
+        "oAria": {
+            "sSortAscending": ": 以升序排列此列",
+            "sSortDescending": ": 以降序排列此列"
+        }
+      },
+      "columnDefs": [{
+        "searchable": false,
+        "orderable": true,
+        "targets": 0
+      }],
+      "order": [[0,'asc'],[1, 'asc'],[2, 'asc'],[3, 'asc'],[4, 'asc'],[5, 'asc'],[6, 'asc'],[7, 'asc']]
+    });
+
+    table.on('order.dt search.dt', function() {
+      table.column(0, {
+        search: 'applied',
+        order: 'applied'
+      }).nodes().each(function(cell, i) {
+        cell.innerHTML = i + 1;
+      });
+    }).draw();
+
+    $('#books tbody').on('click', 'tr', function () {
+      if ( $(this).hasClass('selected') ) {
+        $(this).removeClass('selected');
+      }
+      else {
+        table.$('tr.selected').removeClass('selected');
+        $(this).addClass('selected');
+      }
+    });
+    $("#cancelAdd").on('click', function() {
+      console.log('cancelAdd');
+      $("#addBookModal").find('input').val('')
+    })
+
+    $("#addBooksInfo").on('click', function() {
+      console.log('addBooksInfo'); 
+      if (data.length) {
+        if ($("#addBookModal").find('input').val() !== '') {
+          var id = $("#id").val()
+<!--          var type = $("#type").val()-->
+<!--          var subtype = $("#subtype").val()-->
+          var question = $("#question").val()
+          var answer_a = $("#answer_a").val()
+          var answer_b = $("#answer_b").val()
+          var answer_c = $("#answer_c").val()
+          var answer_d = $("#answer_d").val()
+          var answer_true = $("#answer_true").val()
+          var addBookInfos = [].concat(id,question, answer_a, answer_b, answer_c, answer_d, answer_true);
+          for (var i = 0; i < addBookInfos.length; i++) {
+            if (addBookInfos[i] === '') {
+              alert(titles[i] + '内容不能为空')
+            }
+          }
+          table.row.add(['', id,question, answer_a, answer_b, answer_c, answer_d, answer_true]).draw();
+          $("#addBookModal").find('input').val('')
+        }
+      } else {
+        alert('请输入内容')
+      }
+    })
+    $("#addBooksInfo").click();    
+
+    $("#btn_add").click(function(){
+      console.log('add');
+      $("#addBook").modal()
+    });
+
+    $('#btn_edit').click(function () {
+      console.log('edit');
+      if (table.rows('.selected').data().length) {
+        $("#editBookInfo").modal()
+        var rowData = table.rows('.selected').data()[0];
+        var inputs = $("#editBookModal").find('input')
+        for (var i = 0; i < inputs.length; i++) {
+          $(inputs[i]).val(rowData[i + 1])
+        }
+      } else {
+        alert('请选择题目');
+      }
+    });
+
+
+    $("#saveEdit").click(function() {
+      var editId = $("#editId").val()
+<!--      var editType = $("#editType").val()-->
+<!--      var editSubtype = $("#editSubtype").val()-->
+      var editQuestion = $("#editQuestion").val()
+      var editAnswer_a = $("#editAnswer_a").val()
+      var editAnswer_b = $("#editAnswer_b").val()
+      var editAnswer_c = $("#editAnswer_c").val()
+      var editAnswer_d = $("#editAnswer_d").val()
+      var editAnswer_true = $("#editAnswer_true").val()
+      var newRowData = [].concat(editId,editQuestion, editAnswer_a, editAnswer_b, editAnswer_c, editAnswer_d, editAnswer_true);
+      var tds = Array.prototype.slice.call($('.selected td'))
+      for (var i = 0; i < newRowData.length; i++) {
+        if (newRowData[i] !== '') {
+          tds[i + 1].innerHTML = newRowData[i];
+        } else {
+          alert(titles[i] + '内容不能为空')
+        }
+      }    
+    })
+
+    $("#cancelEdit").click(function() {
+      console.log('cancelAdd');
+      $("#editBookModal").find('input').val('')
+    })
+
+    $('#btn_delete').click(function () {
+      if (table.rows('.selected').data().length) {
+        $("#deleteBook").modal()
+      } else {
+        alert('请选择题目');
+      }
+    });
+
+    $('#delete').click(function () {
+      table.row('.selected').remove().draw(false);
+    });
+
+  })
+  showRefresh : true// 刷新按钮
+</script>
+
+</html>

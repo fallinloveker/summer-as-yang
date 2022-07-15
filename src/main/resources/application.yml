@@ -1,0 +1,27 @@
+
+spring:
+    datasource:
+        username: root
+        password: 123456
+        #?serverTimezone=UTC解决时区的报错
+        url: jdbc:mysql://localhost:3306/tikujun?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=true
+        driver-class-name: com.mysql.cj.jdbc.Driver
+    thymeleaf:
+        prefix: classpath:/templates/
+        suffix: .html
+        mode: LEGACY-HTML5
+        encoding: UTF-8
+        servlet:
+            content-type: text/html
+        cache: false
+        enabled: true
+
+mybatis:
+    # 注意：对应实体类的路径
+    type-aliases-package: com.say.tikujun.pojo
+    #指定myBatis的核心配置文件与Mapper映射文件
+    mapper-locations: classpath:mapper/*.xml
+    configuration:
+        map-underscore-to-camel-case: true
+server:
+    port: 8081

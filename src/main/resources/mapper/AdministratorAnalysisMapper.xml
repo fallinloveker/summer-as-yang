@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.say.tikujun.mapper.AdministratorAnalysisMapper">
+    <resultMap id="gq" type="com.say.tikujun.pojo.Question">
+        <id column="id" property="id"/>
+        <result column="question" property="question"/>
+        <result column="type" property="type"/>
+        <result column="answer_a" property="answer_a"/>
+        <result column="answer_b" property="answer_b"/>
+        <result column="answer_c" property="answer_c"/>
+        <result column="answer_d" property="answer_d"/>
+        <result column="answer_true" property="answer_true"/>
+    </resultMap>
+    <resultMap id="agqi" type="com.say.tikujun.pojo.QuestionNumberInfo">
+        <id column="id" property="id_q"/>
+        <result column="number_a" property="number_a"/>
+        <result column="number_b" property="number_b"/>
+        <result column="number_c" property="number_c"/>
+        <result column="number_d" property="number_d"/>
+        <result column="number_true" property="number_true"/>
+        <result column="number_all" property="number_all"/>
+    </resultMap>
+    <select id = "A_getQuestionInfo" resultMap="gq">
+        select * from question_bank where subtype = ${subtype}
+    </select>
+    <select id = "A_getQuestionInfo_type" resultType="String">
+        select distinct type from question_bank
+    </select>
+    <select id = "A_getQuestionInfo_subtype" resultType="String">
+        select distinct subtype from question_bank where type = ${type}
+    </select>
+    <select id = "A_getQuestionNumberInfo" resultMap="agqi">
+        select * from question_number where subtype = ${subtype}
+    </select>
+    <select id="getQuestionType" resultType="Question">
+        select * from question_bank where type = ${type}
+    </select>
+</mapper>

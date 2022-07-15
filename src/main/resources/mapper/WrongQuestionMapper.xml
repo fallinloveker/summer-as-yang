@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.say.tikujun.mapper.WrongQuestionMapper">
+    <resultMap id="sq" type="com.say.tikujun.pojo.Question">
+        <id column="id" property="id"/>
+        <result column="question" property="question"/>
+        <result column="type" property="type"/>
+    </resultMap>
+    <!--<resultMap id="ss" type="com.say.tikujun.pojo.SingleQuestion">
+        <id column="id_s" property="id_s"/>
+        <result column="id_q" property="id_q"/>
+    </resultMap>*/-->
+    <delete id="delWrongQuestion">
+        delete from question_wrong where id_student = ${id_s} and id_question = ${id_q}
+    </delete>
+    <select id="selectWrongQuestion_s" resultType="int">
+        select id_question from question_wrong where id_student = ${id_s}
+    </select>
+    <select id="selectWrongQuestion_q" resultType="Question">
+        select * from question_bank where id = ${id_q} and type = ${type}
+    </select>
+    <select id="selectWrongQuestion_t" resultType="String">
+        select type from question_bank where id = ${id_q}
+    </select>
+    <select id="selectCollectionBar_s" resultType="int">
+        select id_question from collection_bar where id_student = ${id_s}
+    </select>
+    <select id="selectCollectionBar_q" resultType="Question">
+        select * from question_bank where id = ${id_q} and type = ${type}
+    </select>
+    <select id="selectCollectionBar_t" resultType="String">
+        select type from question_bank where id = ${id_q}
+    </select>
+</mapper>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.say.tikujun.mapper.RegisterMapper">
+    <select id = "getTest" resultType="int">
+        select IFNULL((select 1 as isExist  from student where contact = ${contact} limit 1), 0)
+    </select>
+    <insert id = "getRegister">
+        insert into student(student.name, id, contact, student.password, question_number, true_number) values(${name_s}, ${contact}, ${contact}, ${password}, 0, 0)
+    </insert>
+    <update id="updateStudent">
+        update student set student.password = ${password} where id = ${id_s} and student.password = ${oldpassword}
+    </update>
+    <select id = "checkUserLoginInfo" resultType="int">
+        select IFNULL((select 1 as isExist  from student where id = ${id_s} and password = ${password} limit 1), 0)
+    </select>
+    <select id = "A_getTest" resultType="int">
+        select IFNULL((select 1 as isExist  from administrator where contact = ${contact} limit 1), 0)
+    </select>
+    <insert id = "A_getRegister">
+        insert into administrator(administrator.name, id, contact, administrator.password) values(${name_s}, ${contact}, ${contact}, ${password})
+    </insert>
+    <update id="updateAdministrator">
+        update administrator set administrator.password = ${password} where id = ${id_s} and administrator.password = ${oldpassword}
+    </update>
+    <select id = "checkAdministratorLoginInfo" resultType="int">
+        select IFNULL((select 1 as isExist  from administrator where id = ${id_s} and password = ${password} limit 1), 0)
+    </select>
+</mapper>
